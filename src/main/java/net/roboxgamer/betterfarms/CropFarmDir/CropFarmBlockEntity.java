@@ -31,7 +31,7 @@ import java.util.Optional;
 
 public class CropFarmBlockEntity extends BlockEntity implements MenuProvider {
   private static final Component TITLE = ModRegistry.CROP_FARM_BLOCK.get().getName();
-  private static final int DEFAULT_MAX_PROGRESS = 100;
+  private static final int DEFAULT_MAX_PROGRESS = 10;
   
   private final CustomItemStackHandler inputSlots = new CustomItemStackHandler(3,this);
   private final CustomItemStackHandler extraSlots = new CustomItemStackHandler(3,this);
