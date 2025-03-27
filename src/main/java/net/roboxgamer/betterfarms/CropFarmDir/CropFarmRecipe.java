@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.roboxgamer.betterfarms.ChanceResult;
+import net.roboxgamer.betterfarms.util.ChanceResult;
 import net.roboxgamer.betterfarms.ModRegistry;
 import org.jetbrains.annotations.NotNull;
 

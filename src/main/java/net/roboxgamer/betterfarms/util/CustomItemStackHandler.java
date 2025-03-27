@@ -1,4 +1,4 @@
-package net.roboxgamer.betterfarms;
+package net.roboxgamer.betterfarms.util;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.SimpleContainer;

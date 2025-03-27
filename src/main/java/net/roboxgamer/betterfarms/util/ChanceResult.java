@@ -1,4 +1,4 @@
-package net.roboxgamer.betterfarms;
+package net.roboxgamer.betterfarms.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
