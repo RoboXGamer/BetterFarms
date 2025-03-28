@@ -2,64 +2,71 @@ package net.roboxgamer.betterfarms.CropFarmDir;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.roboxgamer.betterfarms.BetterFarms;
 import org.jetbrains.annotations.NotNull;
 
-public class CropFarmScreen extends AbstractContainerScreen<CropFarmMenu> {
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.roboxgamer.betterfarms.base.AbstractFarmScreen;
+
+public class CropFarmScreen extends AbstractFarmScreen<CropFarmMenu, CropFarmBlockEntity> {
+  
+  private static final ResourceLocation TEXTURE = BetterFarms.location("textures/gui/crop_farm_screen.png");
+  
+  private static final int PROGRESS_BAR_X = 80;
+  private static final int PROGRESS_BAR_Y = 35;
+  private static final int PROGRESS_BAR_WIDTH = 24;
+  private static final int PROGRESS_BAR_HEIGHT = 17;
+  
   public CropFarmScreen(CropFarmMenu menu, Inventory playerInventory, Component title) {
     super(menu, playerInventory, title);
-    this.imageHeight += 40;
-    this.inventoryLabelY += 40;
+    // Base constructor already adds 40px height and adjusts inventoryLabelY
   }
   
   @Override
-  protected void init() {
-    super.init();
+  protected ResourceLocation getBackgroundTexture() {
+    return TEXTURE;
   }
+  
   
   @Override
   protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-    guiGraphics.blit(BetterFarms.location("textures/gui/crop_farm_screen.png"), this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    guiGraphics.blit(getBackgroundTexture(), this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
     
+    // Draw progress bar if processing
+    if (menu.isProcessing()) {
+      int progress = menu.getScaledProgress(PROGRESS_BAR_WIDTH); // Get scaled progress from menu
+    //  TODO: Implement progress bar rendering
+    }
+    
+    renderSlotBackgrounds(guiGraphics, this.leftPos, this.topPos);
+  }
+  
+  private void renderSlotBackgrounds(GuiGraphics guiGraphics, int relX, int relY) {
     // Input Slots
-    renderSlotBg(guiGraphics,98,14);
-    renderSlotBg(guiGraphics,116,14);
-    renderSlotBg(guiGraphics,134,14);
-    
-    
-    
-    // Extra Slots
-    renderSlotBg(guiGraphics,98,34);
-    renderSlotBg(guiGraphics,116,34);
-    renderSlotBg(guiGraphics,134,34);
-    
+    renderSingleSlotBg(guiGraphics, relX + 98, relY + 14);
+    renderSingleSlotBg(guiGraphics, relX + 116, relY + 14);
+    renderSingleSlotBg(guiGraphics, relX + 134, relY + 14);
     
     // Upgrade Slots
-    renderSlotBg(guiGraphics,98,54);
-    renderSlotBg(guiGraphics,116,54);
-    renderSlotBg(guiGraphics,134,54);
+    renderSingleSlotBg(guiGraphics, relX + 98, relY + 34);
+    renderSingleSlotBg(guiGraphics, relX + 116, relY + 34);
+    renderSingleSlotBg(guiGraphics, relX + 134, relY + 34);
     
     // Output Slots
     int outputSlotsYStart = 74;
     for (int j = 0; j < 2; j++) {
       for (int i = 0; i < 9; i++) {
-        renderSlotBg(guiGraphics, 8 + i * 18, outputSlotsYStart + j * 18);
+        renderSingleSlotBg(guiGraphics, relX + 8 + i * 18, relY + outputSlotsYStart + j * 18);
       }
     }
   }
   
-  private void renderSlotBg(GuiGraphics guiGraphics, int x, int y) {
-    var location = ResourceLocation.withDefaultNamespace("container/slot");
-    var sprite = Minecraft.getInstance().getGuiSprites().getSprite(location);
-    guiGraphics.blit(this.leftPos + x - 1,this.topPos + y - 1,0,18,18,sprite);
-  }
-  
-  public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    super.render(guiGraphics, mouseX, mouseY, partialTick);
-    this.renderTooltip(guiGraphics, mouseX, mouseY);
+  private void renderSingleSlotBg(GuiGraphics guiGraphics, int x, int y) {
+    ResourceLocation location = ResourceLocation.withDefaultNamespace("container/slot");
+    TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(location);
+    guiGraphics.blit(x - 1, y - 1, 0, 18, 18, sprite);
   }
 }

@@ -15,6 +15,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.roboxgamer.betterfarms.base.AbstractFarmBlockEntity;
+import net.roboxgamer.betterfarms.base.recipe.ThreeSlotFarmInput;
 import net.roboxgamer.betterfarms.util.ChanceResult;
 import net.roboxgamer.betterfarms.ModRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -25,30 +27,30 @@ import java.util.stream.Collectors;
 
 public record CropFarmRecipe(
     Ingredient toolInput,
-    Ingredient ingredientInput,
-    Ingredient baseInput,
+    Ingredient primaryInput,
+    Ingredient secondaryInput,
     List<ChanceResult> outputItems
-) implements Recipe<CropFarmRecipeInput> {
+) implements Recipe<ThreeSlotFarmInput>, AbstractFarmBlockEntity.ICraftingFarmRecipe<ThreeSlotFarmInput> {
   
   @Override
-  public boolean matches(@NotNull CropFarmRecipeInput cropFarmRecipeInput, @NotNull Level level) {
+  public boolean matches(@NotNull ThreeSlotFarmInput recipeInput, @NotNull Level level) {
     if (level.isClientSide()) return false;
-    return this.toolInput.test(cropFarmRecipeInput.toolInput())
-        && this.ingredientInput.test(cropFarmRecipeInput.ingredientInput())
-        && this.baseInput.test(cropFarmRecipeInput.baseInput());
+    return this.toolInput.test(recipeInput.tool())
+        && this.primaryInput.test(recipeInput.primary())
+        && this.secondaryInput.test(recipeInput.secondary());
   }
   
   @Override
   public @NotNull NonNullList<Ingredient> getIngredients() {
     NonNullList<Ingredient> list = NonNullList.create();
     list.add(this.toolInput);
-    list.add(this.ingredientInput);
-    list.add(this.baseInput);
+    list.add(this.primaryInput);
+    list.add(this.secondaryInput);
     return list;
   }
   
   @Override
-  public @NotNull ItemStack assemble(@NotNull CropFarmRecipeInput cropFarmRecipeInput, HolderLookup.@NotNull Provider provider) {
+  public @NotNull ItemStack assemble(@NotNull ThreeSlotFarmInput recipeInput, HolderLookup.@NotNull Provider provider) {
     return this.getResultItem(provider);
   }
   
@@ -96,16 +98,16 @@ public record CropFarmRecipe(
   public static class Serializer implements RecipeSerializer<CropFarmRecipe> {
     public static final MapCodec<CropFarmRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
         Ingredient.CODEC_NONEMPTY.fieldOf("tool").forGetter(CropFarmRecipe::toolInput),
-        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropFarmRecipe::ingredientInput),
-        Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(CropFarmRecipe::baseInput),
+        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropFarmRecipe::primaryInput),
+        Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(CropFarmRecipe::secondaryInput),
         Codec.list(ChanceResult.CODEC).fieldOf("output").forGetter(CropFarmRecipe::outputItems)
     ).apply(inst, CropFarmRecipe::new));
     
     public static final StreamCodec<RegistryFriendlyByteBuf, CropFarmRecipe> STREAM_CODEC =
         StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC, CropFarmRecipe::toolInput,
-            Ingredient.CONTENTS_STREAM_CODEC, CropFarmRecipe::ingredientInput,
-            Ingredient.CONTENTS_STREAM_CODEC, CropFarmRecipe::baseInput,
+            Ingredient.CONTENTS_STREAM_CODEC, CropFarmRecipe::primaryInput,
+            Ingredient.CONTENTS_STREAM_CODEC, CropFarmRecipe::secondaryInput,
             ChanceResult.STREAM_CODEC.apply(ByteBufCodecs.list()), CropFarmRecipe::outputItems,
             CropFarmRecipe::new);
     
