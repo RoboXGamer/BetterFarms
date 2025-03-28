@@ -17,6 +17,8 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.roboxgamer.betterfarms.CropFarmDir.CropFarmScreen;
+import net.roboxgamer.betterfarms.TreeFarmDir.TreeFarmScreen;
+import net.roboxgamer.betterfarms.base.AbstractFarmBlockEntity;
 import org.slf4j.Logger;
 
 @Mod(net.roboxgamer.betterfarms.BetterFarms.MODID)
@@ -41,11 +43,16 @@ public class BetterFarms {
     event.registerBlockEntity(
         Capabilities.ItemHandler.BLOCK,
         ModRegistry.CROP_FARM_BLOCK_ENTITY.get(),
-        (be, side) -> be.getCapabilityHandler(side));
+        AbstractFarmBlockEntity::getCapabilityHandler);
+    event.registerBlockEntity(
+        Capabilities.ItemHandler.BLOCK,
+        ModRegistry.TREE_FARM_BLOCK_ENTITY.get(),
+        AbstractFarmBlockEntity::getCapabilityHandler);
   }
   
   private void registerScreens(RegisterMenuScreensEvent event) {
     event.register(ModRegistry.CROP_FARM_MENU.get(), CropFarmScreen::new);
+    event.register(ModRegistry.TREE_FARM_MENU.get(), TreeFarmScreen::new);
   }
   
   @SubscribeEvent

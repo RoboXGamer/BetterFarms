@@ -26,7 +26,9 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
   @Override
   protected void generate() {
-    dropSelf(ModRegistry.CROP_FARM_BLOCK.get());
+    ModRegistry.BLOCKS.getEntries().forEach(
+        holder -> dropSelf(holder.get())
+    );
   }
 
   protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {

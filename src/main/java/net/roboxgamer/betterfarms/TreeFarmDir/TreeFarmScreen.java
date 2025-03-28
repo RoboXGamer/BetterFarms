@@ -1,17 +1,16 @@
-package net.roboxgamer.betterfarms.CropFarmDir;
+package net.roboxgamer.betterfarms.TreeFarmDir;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.roboxgamer.betterfarms.BetterFarms;
+import net.roboxgamer.betterfarms.base.AbstractFarmScreen;
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.roboxgamer.betterfarms.base.AbstractFarmScreen;
-
-public class CropFarmScreen extends AbstractFarmScreen<CropFarmMenu, CropFarmBlockEntity> {
+public class TreeFarmScreen extends AbstractFarmScreen<TreeFarmMenu, TreeFarmBlockEntity> {
   
   private static final ResourceLocation TEXTURE = BetterFarms.location("textures/gui/generic_base_tall.png");
   
@@ -20,7 +19,7 @@ public class CropFarmScreen extends AbstractFarmScreen<CropFarmMenu, CropFarmBlo
   private static final int PROGRESS_BAR_WIDTH = 24;
   private static final int PROGRESS_BAR_HEIGHT = 17;
   
-  public CropFarmScreen(CropFarmMenu menu, Inventory playerInventory, Component title) {
+  public TreeFarmScreen(TreeFarmMenu menu, Inventory playerInventory, Component title) {
     super(menu, playerInventory, title);
     // Base constructor already adds 40px height and adjusts inventoryLabelY
   }

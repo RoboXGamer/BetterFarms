@@ -20,6 +20,10 @@ import net.roboxgamer.betterfarms.CropFarmDir.CropFarmBlock;
 import net.roboxgamer.betterfarms.CropFarmDir.CropFarmBlockEntity;
 import net.roboxgamer.betterfarms.CropFarmDir.CropFarmMenu;
 import net.roboxgamer.betterfarms.CropFarmDir.CropFarmRecipe;
+import net.roboxgamer.betterfarms.TreeFarmDir.TreeFarmBlock;
+import net.roboxgamer.betterfarms.TreeFarmDir.TreeFarmBlockEntity;
+import net.roboxgamer.betterfarms.TreeFarmDir.TreeFarmMenu;
+import net.roboxgamer.betterfarms.TreeFarmDir.TreeFarmRecipe;
 
 import java.util.function.Supplier;
 
@@ -82,6 +86,30 @@ public class ModRegistry {
         @Override
         public String toString() {
           return "crop_farm";
+        }
+      });
+  
+//  Tree Farm Block
+  
+  public static final DeferredBlock<TreeFarmBlock> TREE_FARM_BLOCK = registerBlock("tree_farm_block", () ->
+      new TreeFarmBlock(BlockBehaviour.Properties.of()));
+  
+  public static final Supplier<BlockEntityType<TreeFarmBlockEntity>> TREE_FARM_BLOCK_ENTITY =
+      BLOCK_ENTITIES.register("tree_farm_block_entity", () -> BlockEntityType.Builder.
+          of(TreeFarmBlockEntity::new,
+             TREE_FARM_BLOCK.get())
+          .build(null));
+  
+  public static final Supplier<MenuType<TreeFarmMenu>> TREE_FARM_MENU = MENUS.register(
+      "tree_farm_menu", () -> IMenuTypeExtension.create(TreeFarmMenu::new));
+  
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TreeFarmRecipe>> TREE_FARM_SERIALIZER =
+      SERIALIZERS.register("tree_farm", TreeFarmRecipe.Serializer::new);
+  public static final DeferredHolder<RecipeType<?>, RecipeType<TreeFarmRecipe>> TREE_FARM_TYPE =
+      TYPES.register("tree_farm", () -> new RecipeType<TreeFarmRecipe>() {
+        @Override
+        public String toString() {
+          return "tree_farm";
         }
       });
 }

@@ -20,6 +20,8 @@ public class ModBlockTagProvider extends BlockTagsProvider {
   @Override
   protected void addTags(HolderLookup.@NotNull Provider pProvider) {
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(ModRegistry.CROP_FARM_BLOCK.get());
+        .add(ModRegistry.CROP_FARM_BLOCK.get())
+        .add(ModRegistry.TREE_FARM_BLOCK.get());
+        
   }
 }

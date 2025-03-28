@@ -16,6 +16,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
   @Override
   protected void registerStatesAndModels() {
     blockWithItem(ModRegistry.CROP_FARM_BLOCK);
+    blockWithItem(ModRegistry.TREE_FARM_BLOCK);
   }
   private <T extends Block> void blockWithItem(DeferredBlock<T> block) {
     simpleBlockWithItem(block.get(), cubeAll(block.get()));
